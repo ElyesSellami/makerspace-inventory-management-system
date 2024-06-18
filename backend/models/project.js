@@ -1,4 +1,6 @@
-const { sequelize } = require("../config/config");
+const sequelize = require("../config/config");
+const User = require('./user');
+const { DataTypes } = require('sequelize');
 
 const Project = sequelize.define(
   "Project",
@@ -16,10 +18,6 @@ const Project = sequelize.define(
     professorid: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: User,
-        key: "userid",
-      },
     },
   },
   {}

@@ -1,5 +1,5 @@
 const express = require('express');
-const router = express.router();
+const router = express.Router();
 const models = require("../models");
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
@@ -23,8 +23,9 @@ router.post('/login', async (req, res) => {
       email: user.emailAddress, 
       firstName: user.firstName, 
       lastName: user.lastName, 
-      account_type: user.accountType 
+      accountType: user.accountType 
     }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    sessionStorage.setItem(userToken);
     res.status(200).json({ message: 'Login successful', token });
   } catch(error) {
 
@@ -98,3 +99,5 @@ router.delete('/user/delete', async (req, res) => {
     res.status(500).json({ error: error.message })
   }
 })
+
+module.exports = router;

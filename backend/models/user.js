@@ -1,4 +1,5 @@
-const { sequelize } = require("../config/config");
+const sequelize = require("../config/config");
+const { DataTypes } = require('sequelize');
 
 const encryptPass = async (user) => {
   if (user.password) {
@@ -42,8 +43,8 @@ const User = sequelize.define(
   },
   {
     hooks: {
-      beforeCreate: encryptPass(user),
-      beforeUpdate: encryptPass(user),
+      beforeCreate: encryptPass,
+      beforeUpdate: encryptPass,
     },
   }
 );

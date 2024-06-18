@@ -1,5 +1,6 @@
 const { DataTypes, NOW } = require("sequelize");
-const { sequelize } = require("../config/config");
+const sequelize = require("../config/config");
+const { User, Part, Project } = require('./index')
 
 const Request = sequelize.define(
   "Request",
@@ -13,34 +14,18 @@ const Request = sequelize.define(
     partid: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: Part,
-        key: "partid",
-      },
     },
     requesterid: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: User,
-        key: "userid",
-      },
     },
     superuserid: {
       type: DataTypes.INTEGER,
       allowNull: true,
-      references: {
-        model: User,
-        key: "userid",
-      },
     },
     projectid: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: Project,
-        key: "projectid",
-      },
     },
     decision: {
       type: DataTypes.ENUM,

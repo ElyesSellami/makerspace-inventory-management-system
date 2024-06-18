@@ -1,53 +1,62 @@
-const sequelize = require("../config");
-const Part = require("./part");
-const User = require("./user");
-const Project = require("./project");
-const Request = require("./request");
-const ProjectEnrolment = require("./projectEnrolment");
+const sequelize = require('../config/config');
+const User = require('./user');
+const Project = require('./project');
+const Part = require('./part');
+const Request = require('./request');
+const ProjectEnrolment = require('./projectEnrolment');
 
-//Project focused associations
-Project.hasOne(User, { foreignKey: "userid", sourceKey: "professorid" });
-User.hasMany(Project, { foreignKey: "projectid" });
+// Define associations in a function
+const associateModels = () => {
+  // Project and User Associations
+  Project.belongsTo(User, { foreignKey: 'professorid' });
+  User.hasMany(Project, { foreignKey: 'professorid' });
 
-Part.belongsTo(Project, { foreignKey: "projectid" });
-Project.hasMany(Part, { foreignKey: "partid" });
+  // Part and Project Associations
+  Part.belongsTo(Project, { foreignKey: 'projectid' });
+  Project.hasMany(Part, { foreignKey: 'projectid' });
 
-//Associations concerning Request
-Request.belongsTo(User, {
-  foreignKey: "requesterid",
-  as: "requester",
-  targetKey: "userid",
-});
-User.hasMany(Request, { foreignKey: "requesterid", sourceKey: "userid" });
+  // Request and User Associations
+  Request.belongsTo(User, {
+    foreignKey: 'requesterid',
+    as: 'requester',
+    targetKey: 'userid',
+  });
+  User.hasMany(Request, { foreignKey: 'requesterid', sourceKey: 'userid' });
 
-Request.belongsTo(User, {
-  foreignKey: "superuserid",
-  as: "superuser",
-  targetKey: "userid",
-});
-User.hasMany(Request, { foreignKey: "superuserid", sourceKey: "userid" });
+  Request.belongsTo(User, {
+    foreignKey: 'superuserid',
+    as: 'superuser',
+    targetKey: 'userid',
+  });
+  User.hasMany(Request, { foreignKey: 'superuserid', sourceKey: 'userid' });
 
-Request.hasOne(Part, { foreignKey: "partid" });
-Part.belongsToMany(Request, { foreignKey: "requestid" });
+  // Request and Part Associations
+  Request.belongsTo(Part, { foreignKey: 'partid' });
+  Part.hasMany(Request, { foreignKey: 'partid' });
 
-Request.hasOne(Project, { foreignKey: "projectid" });
-Project.hasMany(Request, { foreignKey: "requestid" });
+  // Request and Project Associations
+  Request.belongsTo(Project, { foreignKey: 'projectid' });
+  Project.hasMany(Request, { foreignKey: 'projectid' });
 
-//ProjectEnrolment associations
-User.belongsToMany(Project, {
-  through: ProjectEnrolment,
-  foreignKey: "projectid",
-});
-Project.belongsToMany(User, {
-  through: ProjectEnrolment,
-  foreignKey: "studentid",
-});
+  // ProjectEnrolment Associations
+  User.belongsToMany(Project, {
+    through: ProjectEnrolment,
+    foreignKey: 'userid',
+  });
+  Project.belongsToMany(User, {
+    through: ProjectEnrolment,
+    foreignKey: 'projectid',
+  });
+};
+
+// Initialize associations
+associateModels();
 
 module.exports = {
-  Part,
+  sequelize,
   User,
   Project,
-  ProjectEnrolment,
+  Part,
   Request,
-  sequelize,
+  ProjectEnrolment,
 };

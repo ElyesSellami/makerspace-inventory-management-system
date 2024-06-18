@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
-const { sequelize } = require("../config/config");
+const sequelize = require("../config/config");
+const { User, Project } = require('./index');
 
 const ProjectEnrolment = sequelize.define(
   "ProjectEnrolment",
@@ -7,18 +8,10 @@ const ProjectEnrolment = sequelize.define(
     projectid: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: Project,
-        key: "projectid",
-      },
     },
     studentid: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: User,
-        key: "userid",
-      },
     },
   },
   {

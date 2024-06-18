@@ -1,4 +1,6 @@
-const { sequelize } = require("../config/config");
+const sequelize = require("../config/config");
+const Project = require('./project');
+const { DataTypes } = require('sequelize');
 
 const Part = sequelize.define(
   "Part",
@@ -26,10 +28,6 @@ const Part = sequelize.define(
     projectid: {
       type: DataTypes.INTEGER,
       allowNull: true,
-      references: {
-        model: Project,
-        key: 'projectid'
-      }
     },
     price: {
       type: DataTypes.FLOAT,
