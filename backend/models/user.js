@@ -1,5 +1,6 @@
 const sequelize = require("../config/config");
 const { DataTypes } = require('sequelize');
+const bcrypt = require("bcrypt");
 
 const encryptPass = async (user) => {
   if (user.password) {
